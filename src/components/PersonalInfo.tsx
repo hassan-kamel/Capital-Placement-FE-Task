@@ -1,24 +1,42 @@
-import { Fragment, useContext } from 'react';
-import { GlobalStateContext } from '../contexts/GlobalState';
-import { PersonalInformation, PersonalInformationItem } from '../interfaces';
+import { Fragment, useContext, useEffect, useState } from 'react';
+import { GlobalContextType, GlobalStateContext } from '../contexts/GlobalState';
+import { PersonalInformation, PersonalInformationItem, PersonalQuestion } from '../interfaces';
 import FormBit from './FormBit';
 import { Divider, Skeleton } from 'antd';
+import QuestionHeader from './QuestionHeader';
 
 const PersonalInfo = () => {
-  const context = useContext(GlobalStateContext);
-  console.log('context: ', context);
+  const context = useContext<GlobalContextType>(GlobalStateContext);
+  console.log('data: ', context.data);
 
-  const personalInformation: PersonalInformation = context?.data?.attributes
-    ?.personalInformation as PersonalInformation;
+  const [personalInformationList, setPersonalInformationList] = useState<
+    { title: string; internalUse: boolean; show: boolean }[] | undefined
+  >(undefined);
+  const [personalQuestionsList, setPersonalQuestionsList] = useState<
+    PersonalQuestion[] | undefined
+  >(undefined);
 
-  const personalInfoList: { title: string; internalUse: boolean; show: boolean }[] =
-    personalInformation &&
-    Object.entries(personalInformation)
-      .filter(([title]) => title !== 'personalQuestions')
-      .map(([title, info]) => ({
-        title,
-        ...(info as PersonalInformationItem),
-      }));
+  useEffect(() => {
+    const personalInformation: PersonalInformation = context?.data?.attributes
+      ?.personalInformation as PersonalInformation;
+
+    setPersonalInformationList(
+      personalInformation &&
+        Object.entries(personalInformation)
+          .filter(([title]) => title !== 'personalQuestions')
+          .map(([title, info]) => ({
+            title,
+            ...(info as PersonalInformationItem),
+          })),
+    );
+
+    setPersonalQuestionsList(
+      personalInformation &&
+        Object.entries(personalInformation).filter(
+          ([title]) => title === 'personalQuestions',
+        )?.[0][1],
+    );
+  }, [context?.data]);
 
   if (!context?.data)
     return (
@@ -30,15 +48,20 @@ const PersonalInfo = () => {
       </>
     );
 
+  console.log('personalQuestionsList: ', personalQuestionsList);
   return (
     <>
-      {personalInformation &&
-        personalInfoList.map((personalInfoItem) => (
+      {personalInformationList &&
+        personalInformationList.map((personalInfoItem) => (
           <Fragment key={personalInfoItem.title}>
             <FormBit {...personalInfoItem} />
             <Divider />
           </Fragment>
         ))}
+      {personalQuestionsList &&
+        personalQuestionsList.map((personalQuestion) => {
+          return <QuestionHeader key={personalQuestion.id} question={personalQuestion} />;
+        })}
     </>
   );
 };

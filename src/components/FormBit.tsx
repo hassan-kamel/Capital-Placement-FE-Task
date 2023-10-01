@@ -30,7 +30,7 @@ const FormBit = ({ title, instruction, internalUse, show, mandatory }: Props) =>
     <>
       <Row>
         <Col span={12}>
-          <Typography.Title level={4} style={{ margin: 0, textTransform: 'capitalize' }}>
+          <Typography.Title level={5} style={{ margin: 0, textTransform: 'capitalize' }}>
             {camelCaseToTitleCase(title)}
             {instruction && <Typography.Paragraph italic>({instruction})</Typography.Paragraph>}
           </Typography.Title>
@@ -40,13 +40,15 @@ const FormBit = ({ title, instruction, internalUse, show, mandatory }: Props) =>
             <Col span={12}>
               {internalUse !== null && internalUse !== undefined && (
                 <Checkbox
-                  onChange={handleChange('internalUse', !internalUse)}
+                  onChange={handleChange('internalUse', !data.internalUse)}
                   checked={data.internalUse}>
                   Internal
                 </Checkbox>
               )}
               {mandatory !== null && mandatory !== undefined && (
-                <Checkbox onChange={handleChange('mandatory', !mandatory)} checked={data.mandatory}>
+                <Checkbox
+                  onChange={handleChange('mandatory', !data.mandatory)}
+                  checked={data.mandatory}>
                   Mandatory
                 </Checkbox>
               )}
@@ -55,7 +57,7 @@ const FormBit = ({ title, instruction, internalUse, show, mandatory }: Props) =>
               {show !== null && show !== undefined && (
                 <Row>
                   <Col span={12}>
-                    <Switch onChange={handleChange('show', !show)} checked={data.show} />
+                    <Switch onChange={handleChange('show', !data.show)} checked={data.show} />
                   </Col>
                   <Col span={12}>{show ? 'show' : 'hide'}</Col>
                 </Row>

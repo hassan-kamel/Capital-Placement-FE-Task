@@ -1,5 +1,5 @@
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, Skeleton, Upload } from 'antd';
+import { UploadOutlined, CloseOutlined } from '@ant-design/icons';
+import { Col, Row, Skeleton, Typography, Upload } from 'antd';
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { useContext, useState } from 'react';
 import { GlobalStateContext } from '../contexts/GlobalState';
@@ -46,10 +46,41 @@ const UploadImage: React.FC = () => {
 
   return (
     <>
-      <Upload {...props}>
-        <Button icon={<UploadOutlined />}>Select File</Button>
-      </Upload>
-      {imageSrc && <img src={imageSrc} alt='' />}
+      {!imageSrc && (
+        <Upload {...props}>
+          <div
+            style={{
+              textAlign: 'center',
+              border: '1px dashed black',
+              width: '450px',
+              cursor: 'pointer',
+            }}>
+            <p>
+              <UploadOutlined style={{ fontSize: '30px' }} />
+            </p>
+            <p>Upload cover image</p>
+            <p style={{}}>16:9 ratio is recommended. Max image size 1mb </p>
+          </div>
+        </Upload>
+      )}
+      {imageSrc && <img src={imageSrc} alt='' style={{ width: '100%' }} />}
+      {imageSrc && (
+        <Row
+          style={{ marginTop: '30px', alignItems: 'center', gap: '20px', cursor: 'pointer' }}
+          onClick={() => {
+            setFileList([]);
+            setImageSrc(null);
+          }}>
+          <Col span={1}>
+            <CloseOutlined style={{ fontSize: '20px', color: 'red' }} />
+          </Col>
+          <Col>
+            <Typography style={{ fontSize: '15px', fontWeight: 'bold', color: 'red' }}>
+              Delete & re-upload
+            </Typography>
+          </Col>
+        </Row>
+      )}
     </>
   );
 };

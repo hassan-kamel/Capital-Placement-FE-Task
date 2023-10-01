@@ -9,15 +9,17 @@ const API_URL_GET = `http://localhost:3100/api/${version}/programs/${programId}/
 // const programIdPUT = import.meta.env.VITE_API_PUT_PROGRAM_ID;
 // const API_URL_PUT = `http://localhost:3100/api/${versionPUT}/programs/${programIdPUT}/application-form`;
 
+export type GlobalContextType = {
+  data: ApplicationForm | null;
+  handlePutFormData?: (data: ApplicationForm) => void;
+};
+
 // Create the Context
-const GlobalStateContext = createContext<
-  { data: ApplicationForm; handlePutFormData?: (data: ApplicationForm) => void } | undefined
->(undefined);
+const GlobalStateContext = createContext<GlobalContextType>({ data: null });
 
 // Create the Context Provider
 const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   const [formData, setFormData] = useState<ApplicationForm | null>(null);
-  console.log('formData: ', formData);
 
   //Access the client
   //   const queryClient = useQueryClient();
@@ -60,7 +62,9 @@ const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   //     mutation.mutate({ data });
   //   };
 
-  return <GlobalStateContext.Provider value={{ data }}>{children}</GlobalStateContext.Provider>;
+  return (
+    <GlobalStateContext.Provider value={{ data: formData }}>{children}</GlobalStateContext.Provider>
+  );
 };
 
 // Export the Context and Provider

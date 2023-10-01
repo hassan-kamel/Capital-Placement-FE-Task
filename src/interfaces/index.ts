@@ -48,7 +48,7 @@ interface Profile {
   profileQuestions: ProfileQuestion[];
 }
 
-interface CustomizedQuestion {
+interface CustomisedQuestion {
   type: string;
   question: string;
   id: string;
@@ -62,7 +62,7 @@ interface ApplicationFormAttributes {
   personalInformation: PersonalInformation;
   coverImage: string;
   profile: Profile;
-  customizedQuestions: CustomizedQuestion[];
+  customisedQuestions: CustomisedQuestion[];
 }
 
 interface ApplicationForm {
@@ -79,7 +79,7 @@ export type {
   ApiRequestBody,
   ApplicationForm,
   ApplicationFormAttributes,
-  CustomizedQuestion,
+  CustomisedQuestion,
   PersonalInformation,
   PersonalInformationItem,
   PersonalQuestion,
