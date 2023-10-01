@@ -46,13 +46,12 @@ const ProfileInfo = () => {
       </>
     );
 
-  console.log('profileQuestionsList: ', profileQuestionsList);
   return (
     <>
       {profileInformationList &&
         profileInformationList.map((profileInfoItem) => (
           <Fragment key={profileInfoItem.title}>
-            <FormBit {...profileInfoItem} />
+            <FormBit {...profileInfoItem} profile />
             <Divider />
           </Fragment>
         ))}

@@ -7,7 +7,7 @@ import QuestionHeader from './QuestionHeader';
 
 const PersonalInfo = () => {
   const context = useContext<GlobalContextType>(GlobalStateContext);
-  console.log('data: ', context.data);
+  // console.log('data: ', context?.data);
 
   const [personalInformationList, setPersonalInformationList] = useState<
     { title: string; internalUse: boolean; show: boolean }[] | undefined
@@ -48,7 +48,6 @@ const PersonalInfo = () => {
       </>
     );
 
-  console.log('personalQuestionsList: ', personalQuestionsList);
   return (
     <>
       {personalInformationList &&

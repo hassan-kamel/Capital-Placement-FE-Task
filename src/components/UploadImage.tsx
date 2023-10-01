@@ -2,28 +2,31 @@ import { UploadOutlined, CloseOutlined } from '@ant-design/icons';
 import { Col, Row, Skeleton, Typography, Upload } from 'antd';
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { useContext, useState } from 'react';
-import { GlobalStateContext } from '../contexts/GlobalState';
+import { GlobalContextType, GlobalStateContext } from '../contexts/GlobalState';
 
 const UploadImage: React.FC = () => {
-  const context = useContext(GlobalStateContext);
+  const { data, setData } = useContext<GlobalContextType>(GlobalStateContext);
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   const props: UploadProps = {
-    onRemove: (file) => {
-      const index = fileList.indexOf(file);
-      const newFileList = fileList.slice();
-      newFileList.splice(index, 1);
-      setFileList(newFileList);
-    },
     beforeUpload: (file) => {
       setFileList([...fileList, file]);
+
       // Display the selected image
       const reader = new FileReader();
       reader.readAsDataURL(file as Blob);
       reader.onload = () => {
         setImageSrc(reader.result as string);
+        setData &&
+          setData((prevData) => ({
+            ...prevData,
+            attributes: {
+              ...prevData.attributes,
+              coverImage: reader.result as string,
+            },
+          }));
       };
 
       return false;
@@ -31,7 +34,7 @@ const UploadImage: React.FC = () => {
     fileList,
   };
 
-  if (!context?.data)
+  if (!data)
     return (
       <>
         <Skeleton.Button
@@ -70,6 +73,14 @@ const UploadImage: React.FC = () => {
           onClick={() => {
             setFileList([]);
             setImageSrc(null);
+            setData &&
+              setData((prevData) => ({
+                ...prevData,
+                attributes: {
+                  ...prevData.attributes,
+                  coverImage: 'http://example.com',
+                },
+              }));
           }}>
           <Col span={1}>
             <CloseOutlined style={{ fontSize: '20px', color: 'red' }} />

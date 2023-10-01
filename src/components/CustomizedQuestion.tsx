@@ -13,7 +13,7 @@ const CustomizedQuestions = () => {
   >(undefined);
 
   useEffect(() => {
-    console.log('context: ', context);
+    // console.log('context: ', context);
 
     setFormCustomizedQuestions(context.data?.attributes?.customisedQuestions);
   }, [context]);
@@ -28,7 +28,7 @@ const CustomizedQuestions = () => {
       </>
     );
 
-  console.log('formCustomizedQuestions: ', formCustomizedQuestions);
+  // console.log('formCustomizedQuestions: ', formCustomizedQuestions);
   return (
     <>
       {formCustomizedQuestions &&
